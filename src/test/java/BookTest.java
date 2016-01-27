@@ -32,7 +32,36 @@ public class BookTest {
     book2.delete();
     assertEquals(Book.all().size(), 1);
     assertEquals("The game of thrones", book1.getTitle());
+  }
 
+  @Test
+  public void book_assignAuthorSuccessfuly() {
+    Author author = new Author("Mikhail Bulgakov");
+    author.save();
+    Book book = new Book("Master and Margarita", "paperback");
+    book.save();
+    book.assign(author);
+    assertEquals(1, book.getAuthors().size());
+  }
+
+  @Test
+  public void book_searchForBookByAuthorSuccessfully() {
+    Author author = new Author("Mikhail Bulgakov");
+    author.save();
+    Book book = new Book("Master and Margarita", "paperback");
+    book.save();
+    book.assign(author);
+    assertEquals(book, book.search("Mikhail Bulgakov").get(0));
+  }
+
+  @Test
+  public void book_searchForBookByTitle() {
+    Author author = new Author("Mikhail Bulgakov");
+    author.save();
+    Book book = new Book("Master and Margarita", "paperback");
+    book.save();
+    book.assign(author);
+    assertEquals(book, book.search("and").get(0));
   }
 
 }

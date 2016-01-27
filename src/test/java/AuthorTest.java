@@ -34,14 +34,13 @@ public class AuthorTest {
   }
 
   @Test
-  public void author_assignedToBook() {
+  public void author_assignBookSuccessfuly() {
     Author author = new Author("Mikhail Bulgakov");
     author.save();
-    Book book = new Book("Master and Margarita", paperback);
+    Book book = new Book("Master and Margarita", "paperback");
     book.save();
     author.assign(book);
     assertEquals(1, author.getBooks().size());
   }
-
 
 }

@@ -19,10 +19,6 @@ public class Author {
     return mId;
   }
 
-  public List<Book> getBooks() {
-      
-  }
-
   @Override
   public boolean equals(Object otherAuthor) {
     if (!(otherAuthor instanceof Author)) {
@@ -77,6 +73,27 @@ public class Author {
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("id", mId)
+        .executeUpdate();
+    }
+  }
+
+  public List<Book> getBooks() {
+    String sql = "SELECT books.id AS mId, books.title AS mTitle, books.format AS mFormat FROM authors " +
+                   "INNER JOIN authors_books AS a_b ON authors.id = a_b.author_id INNER JOIN " +
+                   "books ON books.id = a_b.book_id WHERE authors.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", this.mId)
+        .executeAndFetch(Book.class);
+    }
+  }
+
+  public void assign(Book book) {
+    String sql = "INSERT INTO authors_books (author_id, book_id) VALUES (:authorId, :bookId)";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("authorId", mId)
+        .addParameter("bookId", book.getId())
         .executeUpdate();
     }
   }

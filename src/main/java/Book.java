@@ -88,4 +88,37 @@ public class Book {
         .executeUpdate();
     }
   }
+
+  public List<Author> getAuthors() {
+    String sql = "SELECT authors.id AS mId, authors.name AS mName FROM books " +
+                 "INNER JOIN authors_books AS a_b ON books.id = a_b.book_id INNER JOIN " +
+                 "authors ON authors.id = a_b.author_id WHERE books.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", this.mId)
+        .executeAndFetch(Author.class);
+    }
+  }
+
+  public void assign(Author author) {
+    String sql = "INSERT INTO authors_books (author_id, book_id) VALUES (:authorId, :bookId)";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("authorId", author.getId())
+        .addParameter("bookId", this.mId)
+        .executeUpdate();
+    }
+  }
+
+  public List<Book> search(String searchInput) {
+    String sql = "SELECT books.id AS mId, books.title AS mTitle, books.format AS mFormat FROM books " +
+                 "INNER JOIN authors_books AS a_b ON books.id = a_b.book_id " +
+                 "INNER JOIN authors ON authors.id = a_b.author_id WHERE authors.name LIKE :name OR books.title LIKE :title";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("name", "%"+searchInput+"%")
+        .addParameter("title", "%"+searchInput+"%")
+        .executeAndFetch(Book.class);
+    }
+  }
 }
