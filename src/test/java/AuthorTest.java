@@ -37,7 +37,7 @@ public class AuthorTest {
   public void author_assignBookSuccessfuly() {
     Author author = new Author("Mikhail Bulgakov");
     author.save();
-    Book book = new Book("Master and Margarita", "paperback");
+    Book book = new Book("Master and Margarita", "paperback", 10);
     book.save();
     author.assign(book);
     assertEquals(1, author.getBooks().size());
