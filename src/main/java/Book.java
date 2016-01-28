@@ -142,4 +142,12 @@ public class Book {
         .executeUpdate();
     }
   }
+
+  public int getAvailability() {
+    String sql = "SELECT (books.copies - count(log_records.id)) FROM books " +
+                 "INNER JOIN log_records ON books.id = log_records.book_id WHERE log_records.on_hand = true GROUP BY books.copies";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql).executeScalar(Integer.class);
+    }
+  }
 }

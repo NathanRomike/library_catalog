@@ -20,9 +20,34 @@ public class LogbookTest {
     Patron patron = new Patron("Michael Jordan", "111 Broadway, New York, 11777", "(555) 123-2233");
     patron.save();
     book.checkout(patron, "2016-01-01");
+    Logbook.updateOverdueStatus();
     assertEquals("Of Mice and Men", Logbook.getHistory(book).get(0).getBookTitle());
     assertEquals("Michael Jordan", Logbook.getHistory(book).get(0).getPatronName());
     assertEquals("2016-01-01", Logbook.getHistory(book).get(0).getCheckoutDate());
     assertEquals(true, Logbook.getHistory(book).get(0).isOverDue());
+    assertEquals("2016-01-01", Logbook.getHistory(patron).get(0).getCheckoutDate());
+    assertEquals("2016-01-08", Logbook.getHistory(patron).get(0).getDueDate());
+    assertEquals("2016-01-08", Logbook.getHistory(book).get(0).getDueDate());
+  }
+
+  @Test
+  public void getBookAvailable_9() {
+    Book book = new Book("Of Mice and Men", "paperback", 10);
+    book.save();
+    Patron patron = new Patron("Michael Jordan", "111 Broadway, New York, 11777", "(555) 123-2233");
+    patron.save();
+    book.checkout(patron, "2016-01-01");
+    assertEquals(9, book.getAvailability());
+  }
+
+  @Test
+  public void getListOfOverdueBooks() {
+    Book book = new Book("Of Mice and Men", "paperback", 10);
+    book.save();
+    Patron patron = new Patron("Michael Jordan", "111 Broadway, New York, 11777", "(555) 123-2233");
+    patron.save();
+    book.checkout(patron, "2016-01-01");
+    Logbook.updateOverdueStatus();
+    assertEquals(Logbook.getOverdueBooks().size(), 1);
   }
 }
