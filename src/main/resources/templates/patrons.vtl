@@ -1,0 +1,23 @@
+<h2>List of patrons:</h2>
+<a href="/bookmanager">Manage books</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>address</th>
+      <th>Phone number</th>
+      <th>Books borrowed</th>
+    </tr>
+  </thead>
+  <tbody>
+    #foreach($onePatron in $patron.all())
+      <tr>
+        <td><a href="/patron/main/$onePatron.getId()">$onePatron.getName()</a></td>
+        <td>$onePatron.getAddress()</td>
+        <td>$onePatron.getPhoneNumber()</td>
+        <td>$logbook.getHistory($onePatron).size()</td>
+      </tr>
+    #end
+  </tbody>
+</table>

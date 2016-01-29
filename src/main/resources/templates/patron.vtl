@@ -1,0 +1,39 @@
+<h2>Welcome: $patron.getName()</h2>
+<p>Address: $patron.getAddress()</p>
+<p>Phone Number: $patron.getPhoneNumber()</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Book Title</th>
+      <th>Book Author(s)</th>
+      <th>Format</th>
+      <th>Checkout Date</th>
+      <th>Due Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    #foreach($log in $logbook.getHistory(patron))
+    adw
+      <tr>
+        <td>$book.find($log.mBookId()).getTitle() asd</td>
+        <td>
+          #foreach($author in $book.find($log.mBookId()).getAuthors())
+            |
+            $author.getName()
+          #end
+            |
+        </td>
+        <td>$book.find($log.mBookId()).getFormat()</td>
+        <td>$log.getCheckoutDate()</td>
+        <td>
+          #if ($log.isOverDue())
+            <p style="text-color: red">$log.getDueDate()</p>
+          #else
+            <p style="text-color: green">$log.getDueDate()</p>
+          #end
+          </td>
+      </tr>
+    #end
+  </tbody>
+</table>

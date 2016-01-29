@@ -21,8 +21,8 @@ public class LogbookTest {
     patron.save();
     book.checkout(patron, "2016-01-01");
     Logbook.updateOverdueStatus();
-    assertEquals("Of Mice and Men", Logbook.getHistory(book).get(0).getBookTitle());
-    assertEquals("Michael Jordan", Logbook.getHistory(book).get(0).getPatronName());
+    assertEquals("Of Mice and Men", Book.find(Logbook.getHistory(book).get(0).getBookId()).getTitle());
+    assertEquals("Michael Jordan", Patron.find(Logbook.getHistory(book).get(0).getPatronId()).getName());
     assertEquals("2016-01-01", Logbook.getHistory(book).get(0).getCheckoutDate());
     assertEquals(true, Logbook.getHistory(book).get(0).isOverDue());
     assertEquals("2016-01-01", Logbook.getHistory(patron).get(0).getCheckoutDate());

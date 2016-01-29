@@ -120,7 +120,7 @@ public class Book {
     }
   }
 
-  public List<Book> search(String searchInput) {
+  public static List<Book> search(String searchInput) {
     String sql = "SELECT books.id AS mId, books.title AS mTitle, books.format AS mFormat, books.copies AS mCopies FROM books " +
                  "INNER JOIN authors_books AS a_b ON books.id = a_b.book_id " +
                  "INNER JOIN authors ON authors.id = a_b.author_id WHERE authors.name LIKE :name OR books.title LIKE :title";

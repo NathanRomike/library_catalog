@@ -1,0 +1,112 @@
+#if ($authorObject)
+  <p class="bg-success">succesfully added to new author <strong>$authorObject.getName()</strong></p>
+#end
+
+<div class="col-md-8">
+  #if ($authors.all().size() == 0)
+    <h3 class="bg-warning">Could not find any authors</h3>
+    </div>
+  #elseif ($book)
+      <form action="/addauthors/$book.getId()" method="post">
+      <div class="panel panel-default">
+        <div class="panel-heading panel-grey">
+          <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          </button>
+          <h3>Authors: </h3>
+        </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Name</th>
+                <th>Published books</th>
+              </tr>
+            </thead>
+            <tbody>
+              #foreach($oneauthor in $authors.all())
+                <tr>
+                  <td><input type="checkbox" name="$oneauthor.getId()" id="$oneauthor.getName()" value="$oneauthor.getId()"></td>
+                  <td><a href="/author/change/$oneauthor.getId()">$oneauthor.getName()</a></td>
+                  <td>$oneauthor.getBooks().size()</td>
+                  <td>
+                    <form action="/deleteauthor/$oneauthor.getId()" method="get">
+                      <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              #end
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </form>
+  #else
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-grey">
+        <h3>Authors: </h3>
+      </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Published books</th>
+            </tr>
+          </thead>
+          <tbody>
+            #foreach($oneauthor in $authors.all())
+              <tr>
+
+                <td><a href="/author/change/$oneauthor.getId()">$oneauthor.getName()</a></td>
+                <td>$oneauthor.getBooks().size()</td>
+                <td>
+                  <form action="/deleteauthor/$oneauthor.getId()" method="get">
+                    <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            #end
+          </tbody>
+        </table>
+    </div>
+  </div>
+#end
+
+  <div class="col-md-4">
+    <div class="jumbotron mini-jumbotron">
+      #if ($updateAuthors)
+        <form class="form-horizontal" action="/author/update/$updateAuthors.getId()" method="post">
+          <div class="bs-callout bs-callout-info">
+            <h4>Update author</h4>
+
+            <div class="form-group">
+              <input type="text" class="form-control" name="updateName" id="updateName" placeholder="title" value="$updateAuthors.getName()">
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block btn-update" name="button">Update</button>
+            </div>
+          </div>
+        </form>
+      #end
+
+      <form class="form-horizontal" action="/author/add" method="post">
+        <div class="bs-callout bs-callout-info">
+          <h4>Add new author</h4>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="newName" id="newName" placeholder="name">
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" name="button">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

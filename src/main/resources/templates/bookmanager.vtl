@@ -1,0 +1,111 @@
+#if ($bookObject)
+  <p class="bg-success">succesfully added to new book <strong>$bookObject.getTitle()</strong></p>
+#end
+
+<a href="/authors">Manage authors</a>
+<div class="col-md-8">
+  #if ($book.all().size() == 0)
+    <h3 class="bg-warning">Could not find any books</h3>
+    </div>
+  #else
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-grey">
+        <h3>Books: </h3>
+      </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Authors</th>
+              <th>Format</th>
+              <th>Copies</th>
+            </tr>
+          </thead>
+          <tbody>
+            #foreach($onebook in $book.all())
+              <tr>
+                <td><a href="/book/change/$onebook.getId()">$onebook.getTitle()</a></td>
+                <td>
+                  #if ($onebook.getAuthors().size() == 0)
+                    <form action="/authors/$onebook.getId()" method="get">
+                      <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+                        <p>Add author <span class="glyphicon glyphicon-user" aria-hidden="true"></span></p>
+                      </button>
+                    </form>
+                  #elseif ($onebook.getAuthors().size() == 1)
+                    #foreach($author in $onebook.getAuthors())
+                      $author.getName()
+                    #end
+                  #else
+                    #foreach($author in $onebook.getAuthors())
+                      $author.getName(),
+                    #end
+                  #end
+                </td>
+                <td>$onebook.getFormat()</td>
+                <td>$onebook.getAmount()</td>
+                <td>
+                  <form action="/deletebook/$onebook.getId()" method="get">
+                    <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            #end
+          </tbody>
+        </table>
+    </div>
+  </div>
+#end
+
+  <div class="col-md-4">
+    <div class="jumbotron mini-jumbotron">
+      #if ($updateBook)
+        <form class="form-horizontal" action="/book/update/$updateBook.getId()" method="post">
+          <div class="bs-callout bs-callout-info">
+            <h4>Update book</h4>
+
+            <div class="form-group">
+              <input type="text" class="form-control" name="updateTitle" id="updateTitle" placeholder="title" value="$updateBook.getTitle()">
+            </div>
+
+            <div class="form-group">
+              <input type="text" class="form-control" name="updateCopies" id="updateCopies" placeholder="copies" value="$updateBook.getAmount()">
+            </div>
+
+            <div class="form-group">
+              <input type="text" class="form-control" name="updateFormat" id="updateFormat" placeholder="format" value="$updateBook.getFormat()">
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block btn-update" name="button">Update</button>
+            </div>
+          </div>
+        </form>
+      #end
+
+      <form class="form-horizontal" action="/book/add" method="post">
+        <div class="bs-callout bs-callout-info">
+          <h4>Add new book</h4>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="newTitle" id="newTitle" placeholder="title">
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="newCopies" id="newCopies" placeholder="copies">
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="newFormat" id="newFormat" placeholder="format">
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" name="button">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -1,9 +1,21 @@
 <h1>Welcome to the library catalog!</h1>
 
-<form action="/patron/main" method="get">
-  <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">Patron</button>
+<form class="form-horizontal" action="/patron/main" method="get">
+  <div class="form-group">
+    User name
+    <select id="patron" name="patron" type="text">
+      #foreach($patron in $patrons)
+        <option value="$patron.getId()">$patron.getName()</option>
+      #end
+    </select>
+  </div>
+
+    <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">Patron</button>
+
 </form>
 
 <form action="/librarian/main" method="get">
-  <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">Librarian</button>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">Librarian</button>
+  </div>
 </form>

@@ -1,0 +1,49 @@
+    <div class="panel panel-default">
+      <div class="panel-heading panel-grey">
+        <h3>Books: </h3>
+      </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Authors</th>
+              <th>Format</th>
+              <th>Availibility</th>
+              <th></th>
+              <th>checkout date</th>
+            </tr>
+          </thead>
+          <tbody>
+            #foreach($book in $books)
+              <tr>
+                <td>$book.getTitle()/td>
+              <td>
+                #if ($book.getAuthors().size() == 1)
+                  #foreach($author in $book.getAuthors())
+                    $author.getName()
+                  #end
+                #else
+                  #foreach($author in $book.getAuthors())
+                    $author.getName(),
+                  #end
+                #end
+                </td>
+                <td>$book.getFormat()</td>
+                #if ($book.getAvailability() > 0)
+                  <td>Available</td>
+                #else
+                  <td>Not today() :(</td>
+                #end
+                <td>
+                  <form action="/checkbookout/$book.getId()" method="post">
+                    <button type="submit" class="btn btn-primary" aria-label="Left Align" id="righ-float-button">
+                      <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    </button>
+                  </form>
+                </td>
+                  <td><input type="date" name="checkoutdate" value="2016/01/28"></td>
+                </tr>
+                #end
+          </tbody>
+        </table>
+    </div>

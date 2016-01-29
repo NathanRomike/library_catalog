@@ -5,19 +5,19 @@ import java.util.List;
 import org.sql2o.*;
 
 public class Logbook {
-  private String mBookTitle;
-  private String mPatronName;
+  private int mBookId;
+  private int mPatronId;
   private String mCheckoutdate;
   private String mDueDate;
   private boolean mIsOverDue;
   private static final int DURATION = 7;
 
-  public String getBookTitle() {
-    return mBookTitle;
+  public int getBookId() {
+    return mBookId;
   }
 
-  public String getPatronName() {
-    return mPatronName;
+  public int getPatronId() {
+    return mPatronId;
   }
 
   public String getCheckoutDate() {
@@ -32,15 +32,15 @@ public class Logbook {
     return mDueDate;
   }
 
-  public Logbook(String bookTitle, String patronName, String checkoutDate, boolean isOverDue) {
-    this.mBookTitle = bookTitle;
-    this.mPatronName = patronName;
+  public Logbook(int bookId, int patronId, String checkoutDate, boolean isOverDue) {
+    this.mBookId = bookId;
+    this.mPatronId = patronId;
     this.mCheckoutdate = checkoutDate;
     this.mIsOverDue = isOverDue;
   }
 
   public static List<Logbook> getHistory(Book book) {
-    String sql = "SELECT title AS mBookTitle, name AS mPatronName, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
+    String sql = "SELECT book_id AS mBookId, patron_id AS mPatronId, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
                  "INNER JOIN log_records ON books.id = log_records.book_id " +
                  "INNER JOIN patrons ON patrons.id = log_records.patron_id WHERE books.id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -52,7 +52,7 @@ public class Logbook {
   }
 
   public static List<Logbook> getHistory(Patron patron) {
-    String sql = "SELECT title AS mBookTitle, name AS mPatronName, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
+    String sql = "SELECT book_id AS mBookId, patron_id AS mPatronId, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
                  "INNER JOIN log_records ON books.id = log_records.book_id " +
                  "INNER JOIN patrons ON patrons.id = log_records.patron_id WHERE patrons.id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -64,7 +64,7 @@ public class Logbook {
   }
 
   public static List<Logbook> all() {
-    String sql = "SELECT title AS mBookTitle, name AS mPatronName, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue FROM books " +
+    String sql = "SELECT book_id AS mBookId, patron_id AS mPatronId, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue FROM books " +
                  "INNER JOIN log_records ON books.id = log_records.book_id " +
                  "INNER JOIN patrons ON patrons.id = log_records.patron_id";
     try(Connection con = DB.sql2o.open()) {
@@ -83,7 +83,7 @@ public class Logbook {
   }
 
   public static List<Logbook> getOverdueBooks() {
-    String sql = "SELECT title AS mBookTitle, name AS mPatronName, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
+    String sql = "SELECT book_id AS mBookId, patron_id AS mPatronId, checkout_date AS mCheckoutdate, is_overdue AS mIsOverDue, (checkout_date + :duration) AS mDueDate FROM books " +
                  "INNER JOIN log_records ON books.id = log_records.book_id " +
                  "INNER JOIN patrons ON patrons.id = log_records.patron_id WHERE is_overdue = true";
     try(Connection con = DB.sql2o.open()) {
